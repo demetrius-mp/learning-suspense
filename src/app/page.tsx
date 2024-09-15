@@ -29,7 +29,7 @@ async function Page(props: PageProps) {
 
         <Table term={term} page={currentPage} />
 
-        <Pagination totalPages={totalPages} />
+        <Pagination totalPages={totalPages} currentPage={currentPage} />
       </div>
     </>
   );
@@ -37,7 +37,7 @@ async function Page(props: PageProps) {
 
 // also the complete page but with skeleton loaders for
 // the table and pagination
-function SkeletonPage(props: { page: number }) {
+function SkeletonPage(props: { currentPage: number }) {
   return (
     <>
       <div className="flex flex-col gap-4">
@@ -45,7 +45,7 @@ function SkeletonPage(props: { page: number }) {
 
         <SkeletonTable />
 
-        <SkeletonPagination page={props.page} />
+        <SkeletonPagination currentPage={props.currentPage} />
       </div>
     </>
   );
@@ -56,10 +56,12 @@ function SkeletonPage(props: { page: number }) {
 // and pass it to the page component
 // and to the page skeleton component
 export default function SuspensedPage(props: PageProps) {
+  const currentPage = Number(props?.searchParams?.page) || 1;
+
   return (
     <Suspense
       key={JSON.stringify(props.searchParams)}
-      fallback={<SkeletonPage page={Number(props.searchParams?.page) || 1} />}
+      fallback={<SkeletonPage currentPage={currentPage} />}
     >
       <Page {...props} />
     </Suspense>

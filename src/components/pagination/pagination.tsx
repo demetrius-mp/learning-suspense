@@ -4,12 +4,11 @@ import { classnames } from "@/classnames";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 
-export function Pagination(props: { totalPages: number }) {
+export function Pagination(props: { totalPages: number; currentPage: number }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const { totalPages } = props;
-  const currentPage = Number(searchParams.get("page")) || 1;
+  const { totalPages, currentPage } = props;
 
   const createPageURL = (pageNumber: number | string) => {
     const params = new URLSearchParams(searchParams);
